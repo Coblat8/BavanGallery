@@ -9,7 +9,7 @@ type LoadingProps = {
 }
 
 export default function LoadingScreen({ started, onStarted }: LoadingProps) {
-	const { progress, item, active, total } = useProgress()
+	const { progress } = useProgress()
 	const [readyToStart, setReadyToStart] = useState(false)
 
 	// Add a delay to ensure textures are loaded even after progress reaches 100%
@@ -24,7 +24,6 @@ export default function LoadingScreen({ started, onStarted }: LoadingProps) {
 		}
 	}, [progress])
 
-	console.log('Loading:', { item, active, total, progress: Math.round(progress) })
 
 	return (
 		<div className={`loadingScreen flex-col w-screen h-screen ${started ? "loadingScreen--started" : ""}`}>
@@ -37,7 +36,7 @@ export default function LoadingScreen({ started, onStarted }: LoadingProps) {
 					<LoadingLogo progress={progress} />
 				</motion.div>
 			</div>
-			<span className="font-teko text-neutral-200 text-lg">{Math.round(progress)}%</span>
+			<span className="font-teko text-neutral-200 text-lg">{progress}%</span>
 			<button
 				className="loadingScreen__button font-teko"
 				disabled={!readyToStart}

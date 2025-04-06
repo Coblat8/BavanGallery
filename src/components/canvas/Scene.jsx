@@ -94,7 +94,8 @@ export default function Scene({ ...props }) {
   const audioRef = useRef(null)
   const setIntroCompleted = useAnimationStore((state) => state.setIntroCompleted)
   const [start, setStart] = useState(false)
-const [dpr, setDpr] = useState(1.5)
+// const [dpr, setDpr] = useState(1.5)
+const isMobile = window.innerWidth < 768
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -144,7 +145,7 @@ const [dpr, setDpr] = useState(1.5)
           gl.clearDepth()
           gl.toneMapping = THREE.AgXToneMapping
         }}
-        dpr={dpr}
+        dpr={isMobile ? 2 : 1.5}
         style={{
           zIndex: 30,
           position: 'fixed',
@@ -156,13 +157,13 @@ const [dpr, setDpr] = useState(1.5)
         }}
       >
         <Stats />
-        <PerformanceMonitor
+        {/* <PerformanceMonitor
           bounds={(refreshrate) => (refreshrate > 90 ? [40, 90] : [45, 60])}
           onIncline={() => setDpr(2)}
           onDecline={() => setDpr(1.5)}
           flipflops={3}
           onFallback={() => setDpr(1.5)}
-        />
+        /> */}
         <Suspense fallback={null}>
           <PreloadAssets />
           <SheetProvider sheet={bavanGallerySheet}>

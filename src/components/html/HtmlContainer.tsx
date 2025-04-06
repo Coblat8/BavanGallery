@@ -33,14 +33,14 @@ export default function HtmlContainer() {
 						transition={{ duration: 0.8, ease: 'easeOut' }}
 						key={currentPainting}
 						id="html-container"
-						className='fixed top-[70vh] lg:top-1/2 lg:-translate-y-1/2 left-1/2 lg:right-40 bg-neutral-500/20 backdrop-blur-lg flex flex-col shrink-0 items-start justify-start gap-4 w-[95%] h-[30vh] lg:w-[34rem] lg:h-[36rem] rounded-2xl shadow-lg drop-shadow-lg z-50 '>
+						className='fixed top-[70vh] lg:top-1/2 lg:-translate-y-1/2 left-1/2 lg:right-40 bg-neutral-500/20 backdrop-blur-lg flex flex-col shrink-0 items-start justify-start gap-4 w-full h-[30vh] lg:w-[34rem] lg:h-[36rem] rounded-2xl shadow-lg drop-shadow-lg z-50 '>
 						<div className=" flex flex-col gap-4 pt-4 lg:pt-16">
 							<motion.h2
 								initial={{ opacity: 0, y: -50, }}
 								animate={{ opacity: 1, y: 0, }}
 								exit={{ opacity: 0, y: -50, }}
 								transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
-								className=" text-2xl lg:text-[2rem] leading-10 font-baumans font-bold px-16"> {`Artwork ${currentPainting}`} </motion.h2>
+								className=" text-2xl lg:text-[2rem] lg:leading-10 font-baumans font-bold px-16"> {`Artwork ${currentPainting}`} </motion.h2>
 							<motion.p
 								initial={{ opacity: 0, }}
 								animate={{ opacity: 1, }}
