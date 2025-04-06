@@ -17,7 +17,7 @@ import { EXRLoader } from 'three/addons/loaders/EXRLoader.js'
 import { BavanGallery } from './BavanGallery'
 import { Yard } from './Yard'
 import { BavanLogo } from './BavanLogo'
-import { useIsClient } from '@uidotdev/usehooks'
+import { useIsClient, useWindowSize } from '@uidotdev/usehooks'
 
 
 const isProd = true
@@ -92,6 +92,9 @@ export default function Scene({ ...props }) {
   const setIntroCompleted = useAnimationStore((state) => state.setIntroCompleted)
   const [start, setStart] = useState(false)
   const isClient = useIsClient()
+const {width} = useWindowSize()
+
+const isMobile = width && width <768
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -124,8 +127,7 @@ export default function Scene({ ...props }) {
     }
   }, [setIntroCompleted, start])
 
-  const isMobile = window.innerWidth < 768
-
+  
   if(!isClient) return null
 
   return (
