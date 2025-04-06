@@ -179,10 +179,10 @@ export function BavanGallery(props: JSX.IntrinsicElements['group']) {
     map: blackMetalMap,
     normalMap: blackMetalNormal,
     roughnessMap: blackMetalRoughness,
-    envMap: GPUTier.tier > 1 ?  groundEnv : undefined,
+    envMap: GPUTier.tier > 2 ?  groundEnv : undefined,
     roughness: 0.1,
     metalness: 0.9,
-    envMapIntensity: GPUTier.tier > 1 ? 0.1 : 0 ,
+    envMapIntensity: GPUTier.tier > 2 ? 0.1 : 0 ,
   })
 
   nodes.single_lamp.material = blackMaterial

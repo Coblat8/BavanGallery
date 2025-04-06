@@ -5,11 +5,12 @@ import { PerspectiveCamera, editable as e } from '@theatre/r3f'
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Yard } from './Yard'
-import { BavanLogo } from './BavanLogo'
 import * as THREE from 'three'
 import { useCurrentSheet } from '@theatre/r3f'
 import { Sky } from '@react-three/drei'
 import { useIsClient } from '@uidotdev/usehooks'
+import { useAnimationStore } from 'lib/store/useAnimationStore'
+import IntroScene from './IntroScene'
 
 export default function Experience() {
 
@@ -19,14 +20,10 @@ export default function Experience() {
 
   const cameraLookAtRef = useRef(null)
     const cameraRef = useRef(null)
-  const spotLightTargetRef = useRef(new THREE.Object3D({ position: [0.19, 1.8, 4.54] }))
-  const spotLightRef = useRef(null)
-  const directionalLightRef = useRef(null)
-  spotLightTargetRef.current.position.set(0.19, 1.8, 4.55)
 
+const setInputGroupVisible = useAnimationStore((state) => state.setInputGroupVisible)
   // Only use refs, no state at all
   const showFirstObjectRef = useRef(true)
-  const introGroupRef = useRef(null)
   const galleryGroupRef = useRef(null)
 
   const transitionRef = useRef(null)
@@ -40,10 +37,7 @@ export default function Experience() {
   // Handle all updates in useFrame
   useFrame(() => {
     // Setup spotlight target once
-    if (spotLightRef.current && spotLightRef.current.target !== spotLightTargetRef.current) {
-      spotLightRef.current.target = spotLightTargetRef.current
-      spotLightRef.current.target.updateMatrixWorld()
-    }
+
 
     // Ensure camera lookAt is maintained
     if (cameraRef.current && cameraLookAtRef.current) {
@@ -67,7 +61,7 @@ export default function Experience() {
         showFirstObjectRef.current = false
 
         // Toggle visibility of groups directly
-        if (introGroupRef.current) introGroupRef.current.visible = false
+        setInputGroupVisible(false)
         if (galleryGroupRef.current) galleryGroupRef.current.visible = true
       }
     }
@@ -109,32 +103,6 @@ export default function Experience() {
       />
 
       {/* Directional light with ref */}
-      <e.directionalLight
-        ref={directionalLightRef}
-        theatreKey="Direction_light"
-        color={new THREE.Color(0xffffff)}
-        intensity={1}
-        position={[0, 10, 0]}
-        visible={showFirstObjectRef.current}
-      />
-
-      {/* Spot light with ref */}
-
-      <e.spotLight
-        ref={spotLightRef}
-        theatreKey="spotLight"
-        intensity={50}
-        penumbra={2}
-        decay={0.5}
-        color={new THREE.Color(0xffffff)}
-        castShadow
-        position={[1.2, 0.5, 0.7]}
-        anglePower={20}
-        distance={10}
-        angle={0.3}
-        attenuation={0.4}
-        visible={showFirstObjectRef.current}
-      />
 
       {/* Transition layer */}
       <e.mesh
@@ -154,14 +122,8 @@ export default function Experience() {
         />
       </e.mesh>
 
-      {/* Both groups are rendered, but we control visibility with refs */}
-      <group
-        ref={introGroupRef}
-        visible={true}
-      >
-        <BavanLogo />
-      </group>
-
+      <IntroScene />
+      
       <group
         ref={galleryGroupRef}
         visible={false}

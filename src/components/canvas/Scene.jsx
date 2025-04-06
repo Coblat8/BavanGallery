@@ -147,7 +147,7 @@ const isMobile = width && width <768
           gl.clearDepth()
           gl.toneMapping = THREE.AgXToneMapping
         }}
-        dpr={GPUTier.tier === 1 ? 1 : 2}
+        dpr={GPUTier.tier === 1 ? 1 : GPUTier.tier === 2 ? 1.5 : 2}
         style={{
           zIndex: 30,
           position: 'fixed',
@@ -158,7 +158,7 @@ const isMobile = width && width <768
           pointerEvents: 'auto',
         }}
       >
-        <Stats />
+        {/* <Stats /> */}
 
         <Suspense fallback={null}>
           <SheetProvider sheet={bavanGallerySheet}>
