@@ -117,7 +117,7 @@ export default function Scene({ ...props }) {
               setIntroCompleted(true)
             })
         })
-      }, 4000) // 4 seconds delay
+      }, 1000) // 4 seconds delay
 
       // Cleanup function to clear the timeout if component unmounts
       return () => clearTimeout(animationTimer)
