@@ -9,7 +9,9 @@ export default function HtmlContainer() {
 	const currentPainting = useAnimationStore(state => state.currentPainting)
 	const isClient = useIsClient()
 	if(!isClient) return null
+
 	const isMobile = window.innerWidth < 768
+	
 	return (
 		<>
 			<AnimatePresence>

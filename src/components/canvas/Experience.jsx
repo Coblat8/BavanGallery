@@ -1,3 +1,5 @@
+'use client'
+
 import { BavanGallery } from '@/components/canvas/BavanGallery'
 import { PerspectiveCamera, editable as e } from '@theatre/r3f'
 import { useRef } from 'react'

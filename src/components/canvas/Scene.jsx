@@ -95,7 +95,7 @@ export default function Scene({ ...props }) {
   const setIntroCompleted = useAnimationStore((state) => state.setIntroCompleted)
   const [start, setStart] = useState(false)
 // const [dpr, setDpr] = useState(1.5)
-const isMobile = window.innerWidth < 768
+
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -129,6 +129,7 @@ const isMobile = window.innerWidth < 768
   }, [setIntroCompleted, start])
 
   if(!isClient) return null
+const isMobile = window.innerWidth < 768
 
   return (
     <>
