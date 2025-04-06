@@ -10,7 +10,7 @@ import { RefreshSnapshot, SheetProvider } from '@theatre/r3f'
 // import extension from '@theatre/r3f/dist/extension'
 // import studio from '@theatre/studio'
 import { useAnimationStore } from 'lib/store/useAnimationStore'
-import projectState from '../../../public/Bavan Gallery Project.theatre-project-state-1.json'
+import projectState from '../../../public/Bavan Gallery Project.theatre-project-state-2.json'
 import Experience from './Experience'
 import LoadingScreen from './LoadingScreen'
 import { EXRLoader } from 'three/addons/loaders/EXRLoader.js'
@@ -145,7 +145,7 @@ export default function Scene({ ...props }) {
           gl.clearDepth()
           gl.toneMapping = THREE.AgXToneMapping
         }}
-        dpr={GPUTier.tier === 1 ? 1 : GPUTier.tier === 2 ? 1.5 : 2}
+        dpr={GPUTier.tier === 1 ? 1.5 : GPUTier.tier === 2 ? 2 : 2}
         style={{
           zIndex: 30,
           position: 'fixed',

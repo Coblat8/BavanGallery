@@ -20,7 +20,7 @@ export default function LoadingLogo({ progress = 0, total=0 }: LoadingLogoProps)
 				initial={{ pathLength: 0, fill: "rgba(0, 0, 0, 0)" }}
 				animate={{
 					pathLength: Math.sin(total * Math.PI / 2 / 63) * 100 ,
-					fill: `rgba(80, 80, 80, ${Math.sin(total * Math.PI / 2 / 63)})`
+					fill: `rgba(200, 200, 200, ${Math.sin(total * Math.PI / 2 / 63)})`
 				}}
 				transition={{ duration: 1 }}
 			/>
