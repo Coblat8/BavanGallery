@@ -8,11 +8,11 @@ export default function ClientLenis({ children }: { children: ReactNode }) {
 
 	const lenisRef = useRef<LenisRef>(null)
 
-	useTempus((time: number) => {
-		if (lenisRef.current?.lenis) {
-			lenisRef.current.lenis.raf(time)
-		}
-	})
+	// useTempus((time: number) => {
+	// 	if (lenisRef.current?.lenis) {
+	// 		lenisRef.current.lenis.raf(time)
+	// 	}
+	// })
 
 	return (
 		<ReactLenis
@@ -31,7 +31,7 @@ export default function ClientLenis({ children }: { children: ReactNode }) {
 				// infinite: false,  
 				lerp:  0.225,
 				anchors: true,
-				autoRaf: false,
+				autoRaf: true,
 				// autoResize: true,
 			}}
 		>
