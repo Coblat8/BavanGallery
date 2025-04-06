@@ -167,7 +167,7 @@ export function BavanGallery(props: JSX.IntrinsicElements['group']) {
   image_3_map.repeat.set(2.6, 2.4)
   image_3_map.offset.set(-0.55, -0.875)
 
-  const groundEnv = useEnvironment({ preset: "studio" })
+  const groundEnv = useEnvironment({ files: '/studio_small_03_1k.hdr' })
 
   const noMaterial = new THREE.MeshStandardMaterial({
     color: 'gray',

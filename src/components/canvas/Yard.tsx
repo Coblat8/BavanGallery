@@ -25,7 +25,7 @@ type GLTFResult = GLTF & {
 export function Yard(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/yard-transformed.glb') as GLTFResult
 
-  const treeEnv = useEnvironment({preset:'city'})
+  const treeEnv = useEnvironment({ files: '/potsdamer_platz_1k.hdr'})
 
   materials.Vegetation_Bark_Maple_1.envMap = treeEnv
   materials.Vegetation_Bark_Maple_1.envMapIntensity= 0.3
