@@ -38,17 +38,17 @@ export default function HtmlContainer() {
 						className='fixed top-[70vh] lg:top-1/2 lg:-translate-y-1/2 left-1/2 lg:right-40 bg-neutral-200/30 lg:bg-neutral-500/20 backdrop-blur-lg flex flex-col shrink-0 items-start justify-start gap-4 w-full h-[30vh] lg:w-[34rem] lg:h-[36rem] rounded-2xl shadow-lg drop-shadow-lg z-50 '>
 						<div className=" flex flex-col gap-2 lg:gap-4 pt-4 lg:pt-16">
 							<motion.h2
-								initial={{ opacity: 0, y: -50, }}
+								initial={{ opacity: 0, y: isMobile ? 0 : -50, }}
 								animate={{ opacity: 1, y: 0, }}
-								exit={{ opacity: 0, y: -50, }}
-								transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
+								exit={{ opacity: 0, y: isMobile? 0 : -50, }}
+								transition={{ duration: 0.5, delay:isMobile ? 0.6 : 0.2, ease: 'easeOut' }}
 								className=" text-2xl lg:text-[2rem] lg:leading-10 font-baumans font-bold px-16"> {`Artwork ${currentPainting}`} </motion.h2>
 							<motion.p
 								initial={{ opacity: 0, }}
 								animate={{ opacity: 1, }}
 								exit={{ opacity: 0, }}
 								transition={{ duration: 0.8, delay: 0.6, ease: 'easeOut' }}
-								className=" text-sm lg:text-xl font-outfit text-neutral-900/80 px-16">
+								className=" text-sm lg:text-xl font-outfit text-neutral-950/90 px-16">
 								Created entirely from woven wool, this piece replaces traditional brushstrokes with layered fibers. The rich crimson shapes emerge organically, resembling natural patterns or cellular forms.
 							</motion.p>
 							<span className=" text-sm lg:text-base font-outfit text-neutral-900/70 py-2 lg:py-6 px-16"> untitiled, Sepideh Farzam, 2025</span>
