@@ -97,6 +97,7 @@ export default function Scene({ ...props }) {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       audioRef.current = new Audio('./audio/0406.mp3')
+      
     }
   }, [start])
 
@@ -105,6 +106,7 @@ export default function Scene({ ...props }) {
       
       audioRef.current.play()
       audioRef.current.loop = true
+      audioRef.current.volume = 0.5 * audioRef.current.volume
       // Delay the animation by 4 seconds
       const animationTimer = setTimeout(() => {
         project.ready.then(() => {

@@ -31,18 +31,18 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
 
 
   const updateScrollState = () => {
-    if(scrollTop.current < (lenis.limit - 10)  && animationComplete.current) {
-      animationComplete.current = false
-    }
-    if (scrollTop.current >= (lenis.limit  )  && !animationComplete.current && introCompleted) {
-      const resetPoint = ((11 + 10/30) / (31 + 10/30)) * lenis.limit  // 20% of total height
-      lenis.scrollTo(resetPoint, {
-        immediate: true,
-      }) // Reset without transition
-      scrollTop.current = resetPoint
-      scrollProgress.current = (11 + 10 / 30) / totalAnimation
-      animationComplete.current = true
-    }
+    // if(scrollTop.current < (lenis.limit - 10)  && animationComplete.current) {
+    //   animationComplete.current = false
+    // }
+    // if (scrollTop.current = (lenis.limit  )  && !animationComplete.current && introCompleted) {
+    //   const resetPoint = ((11 + 10/30) / (31 + 10/30)) * lenis.limit  // 20% of total height
+    //   lenis.scrollTo(resetPoint, {
+    //     immediate: true,
+    //   }) // Reset without transition
+    //   scrollTop.current = resetPoint
+    //   scrollProgress.current = (11 + 10 / 30) / totalAnimation
+    //   animationComplete.current = true
+    // }
   }
 
   const stopPoints = {
@@ -84,10 +84,15 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
           if (lenis.direction === 1) {
             lenis.scrollTo((stopPoints.stop1_next / totalAnimation) * lenis.limit, {
               immediate: false,
-              duration: 3.6,
-              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-              lerp: 0.2,
-              onStart: () => setCurrentPainting(1),
+              // duration: 3,
+              // lock:true,
+              duration: 6,
+              // easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),    
+              onStart: () => {
+                setCurrentPainting(1)
+                // lenis.options.prevent = false 
+              },
+              // onComplete: () => {lenis.options.prevent = true}
             })
           } else {
             if (scrollProgress.current * totalAnimation < stopPoints.stop1_end - 10 / 30) {
@@ -106,13 +111,18 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
           if (lenis.direction === 1) {
             setCurrentPainting(0)
           } else if (lenis.direction === -1) {
-            lenis.scrollTo((stopPoints.stop1_next / totalAnimation) * lenis.limit, {
-              immediate: false,
-              duration: 3.6,
-              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-              lerp: 0.9,
-              onStart: () => setCurrentPainting(1),
-            })
+              
+              lenis.scrollTo((stopPoints.stop1_next / totalAnimation) * lenis.limit, {
+                immediate: false,
+                duration: 6,
+                onStart: () => {
+                  setCurrentPainting(1)
+                  // lenis.options.prevent = true
+                },
+                onComplete: () => {
+                  // lenis.options.prevent = false
+                },
+              })
           }
         }
       }
@@ -124,12 +134,15 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
       ) {
         if (scrollProgress.current * totalAnimation < stopPoints.stop2_end) {
           if (lenis.direction === 1) {
+            
             lenis.scrollTo((stopPoints.stop2_next / totalAnimation) * lenis.limit, {
               immediate: false,
-              duration: 6.5,
+              duration: 6,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-              lerp: 1,
               onStart: () => setCurrentPainting(2),
+              onComplete: () => {
+                // lenis.options.prevent = false
+              },
             })
           } else {
             if (scrollProgress.current * totalAnimation < stopPoints.stop2_end - 10 / 30) {
@@ -148,12 +161,15 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
           if (lenis.direction === 1) {
             setCurrentPainting(0)
           } else if (lenis.direction === -1) {
+            
             lenis.scrollTo((stopPoints.stop2_next / totalAnimation) * lenis.limit, {
               immediate: false,
               duration: 3.0,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-              lerp: 0.5,
               onStart: () => setCurrentPainting(2),
+              onComplete: () => {
+                lenis.options.prevent = false
+              },
             })
           }
         }
@@ -166,12 +182,15 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
       ) {
         if (scrollProgress.current * totalAnimation < stopPoints.stop3_end) {
           if (lenis.direction === 1) {
+            
             lenis.scrollTo((stopPoints.stop3_next / totalAnimation) * lenis.limit, {
               immediate: false,
-              duration: 6.6,
+              duration: 6,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-              lerp: 0.9,
               onStart: () => setCurrentPainting(3),
+              onComplete: () => {
+                lenis.options.prevent = false
+              },
             })
           } else {
             if (scrollProgress.current * totalAnimation < stopPoints.stop3_end - 10 / 30) {
@@ -190,12 +209,15 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
           if (lenis.direction === 1) {
             setCurrentPainting(0)
           } else if (lenis.direction === -1) {
+            
             lenis.scrollTo((stopPoints.stop3_next / totalAnimation) * lenis.limit, {
               immediate: false,
-              duration: 3.8,
+              duration: 6,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-              lerp: 0.5,
               onStart: () => setCurrentPainting(3),
+              onComplete: () => {
+                lenis.options.prevent = false
+              },
             })
           }
         }
@@ -208,12 +230,15 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
       ) {
         if (scrollProgress.current * totalAnimation < stopPoints.stop4_end) {
           if (lenis.direction === 1) {
+            
             lenis.scrollTo((stopPoints.stop4_next / totalAnimation) * lenis.limit, {
               immediate: false,
-              duration: 5.6,
+              duration: 6,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-              lerp: 0.9,
               onStart: () => setCurrentPainting(4),
+              onComplete: () => {
+                lenis.options.prevent = false
+              },
             })
           } else {
             if (scrollProgress.current * totalAnimation < stopPoints.stop4_end - 10 / 30) {
@@ -232,12 +257,15 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
           if (lenis.direction === 1) {
             setCurrentPainting(0)
           } else if (lenis.direction === -1) {
+            
             lenis.scrollTo((stopPoints.stop4_next / totalAnimation) * lenis.limit, {
               immediate: false,
-              duration: 3.8,
+              duration: 6,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-              lerp: 0.5,
               onStart: () => setCurrentPainting(4),
+              onComplete: () => {
+                lenis.options.prevent = false
+              },
             })
           }
         }
@@ -250,12 +278,15 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
       ) {
         if (scrollProgress.current * totalAnimation < stopPoints.stop5_end) {
           if (lenis.direction === 1) {
+            
             lenis.scrollTo((stopPoints.stop5_next / totalAnimation) * lenis.limit, {
               immediate: false,
-              duration: 5.6,
+              duration: 6,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-              lerp: 0.9,
               onStart: () => setCurrentPainting(5),
+              onComplete: () => {
+                lenis.options.prevent = false
+              },
             })
           } else {
             if (scrollProgress.current * totalAnimation < stopPoints.stop5_end - 10 / 30) {
@@ -274,18 +305,41 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
           if (lenis.direction === 1) {
             setCurrentPainting(0)
           } else if (lenis.direction === -1) {
+            
             lenis.scrollTo((stopPoints.stop5_next / totalAnimation) * lenis.limit, {
               immediate: false,
-              duration: 4.2,
+              duration: 6,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-              lerp: 0.9,
               onStart: () => setCurrentPainting(5),
+              onComplete: () => {
+                lenis.options.prevent = false
+              },
             })
           }
         }
       }
-  }
 
+
+      else if (scrollProgress.current * totalAnimation > totalAnimation - (25 / 30)) {
+         if (lenis.direction === 1) {
+          
+          lenis.scrollTo(lenis.limit, {
+            immediate: false,
+            duration: 3,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            onComplete: () => {
+              const resetPoint = ((11 + 10 / 30) / (31 + 10 / 30)) * lenis.limit // 20% of total height
+              lenis.scrollTo(resetPoint, {
+                immediate: true,
+              }) // Reset without transition
+              scrollTop.current = resetPoint
+              scrollProgress.current = (11 + 10 / 30) / totalAnimation
+              animationComplete.current = true
+            }
+          })
+         }
+      }
+  }
 
 useEffect(() => {
   lenis.scrollTo((4 / totalAnimation) * lenis.limit, {
@@ -319,6 +373,7 @@ useEffect(() => {
         smooth,
         delta
       )
+      //  bavanGallerySheet.sequence.position = scrollProgress.current * totalAnimation
     }
   })
 
