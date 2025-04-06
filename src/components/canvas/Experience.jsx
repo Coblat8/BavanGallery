@@ -36,28 +36,33 @@ const setInputGroupVisible = useAnimationStore((state) => state.setInputGroupVis
 
   // Handle all updates in useFrame
   useFrame(() => {
-    // Ensure camera lookAt is maintained
-    if (cameraRef.current && cameraLookAtRef.current) {
+    // Optimize camera lookAt for performance
+    if (
+      cameraRef.current &&
+      cameraLookAtRef.current &&
+      cameraRef.current.position.manhattanDistanceTo(
+        cameraRef.current.userData.lastPos || new THREE.Vector3()
+      ) > 0.001
+    ) {
+      // Only update lookAt when camera position has changed significantly
       cameraRef.current.lookAt(cameraLookAtRef.current.position)
+      cameraRef.current.userData.lastPos = cameraRef.current.position.clone()
     }
 
-    // Get current opacity value from Theatre.js
+    // Optimize transition effect updates
     const currentOpacity = obj.value.opacity
+    const opacityDiff = Math.abs(lastOpacityRef.current - currentOpacity)
 
-    // Only update if opacity has changed (performance optimization)
-    if (lastOpacityRef.current !== currentOpacity) {
+    // Only update if opacity has changed significantly (reduces processing on small changes)
+    if (opacityDiff > 0.01) {
       lastOpacityRef.current = currentOpacity
 
-      // Update transition material
       if (materialRef.current) {
         materialRef.current.opacity = currentOpacity
       }
 
-      //   // Handle one-way transition to gallery using visibility instead of state
       if (currentOpacity >= 0.9 && showFirstObjectRef.current) {
         showFirstObjectRef.current = false
-
-        // Toggle visibility of groups directly
         setInputGroupVisible(false)
         if (galleryGroupRef.current) galleryGroupRef.current.visible = true
       }

@@ -358,32 +358,66 @@ useEffect(() => {
 }, [inputGroupVisible])
 
 
-// useEffect(() => {
-    lenis.on('scroll', ({ scroll, progress }) => {
-           if (introCompleted) {
-             scrollTop.current = scroll
-             scrollProgress.current = progress
-             updateScrollState()
+
+    // lenis.on('scroll', ({ scroll, progress }) => {
+    //        if (introCompleted) {
+    //          scrollTop.current = scroll
+    //          scrollProgress.current = progress
+    //          updateScrollState()
              
-           }
-    })
-  //   return () => {
-  //     lenis.off('scroll')
-  //   }
-  // }
-  // , [lenis])
+    //        }
+    // })
+
+    useEffect(() => {
+      let frameId = null
+      let lastScrollTop = 0
+      let lastScrollProgress = 0
+
+      const handleScroll = ({ scroll, progress }) => {
+        if (!introCompleted) return
+
+        // Throttle updates with requestAnimationFrame
+        if (frameId === null) {
+          frameId = requestAnimationFrame(() => {
+            // Apply slight damping to reduce jitter
+            const dampedScroll = lastScrollTop * 0.2 + scroll * 0.8
+            const dampedProgress = lastScrollProgress * 0.2 + progress * 0.8
+
+            // Update values
+            scrollTop.current = dampedScroll
+            scrollProgress.current = dampedProgress
+            lastScrollTop = dampedScroll
+            lastScrollProgress = dampedProgress
+
+            updateScrollState()
+            frameId = null
+          })
+        }
+      }
+
+      lenis.on('scroll', handleScroll)
+
+      return () => {
+        lenis.off('scroll', handleScroll)
+        if (frameId) cancelAnimationFrame(frameId)
+      }
+    }, [lenis, introCompleted])
 
   
-  useFrame(( {viewport}, delta) => {
+  useFrame(({ viewport }, delta) => {
     if (introCompleted && scrollProgress.current * totalAnimation > 3 + 29 / 30) {
+      // Apply stronger damping to camera movement for iOS
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+      const smoothFactor = isMobile ? 40 : 9999999 // More aggressive smoothing on mobile
+
       bavanGallerySheet.sequence.position = damp(
         bavanGallerySheet.sequence.position,
         scrollProgress.current * totalAnimation,
-        smooth,
+        smoothFactor,
         delta
       )
+
       detectStops(delta)
-      //  bavanGallerySheet.sequence.position = scrollProgress.current * totalAnimation
     }
   })
 
