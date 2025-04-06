@@ -1,5 +1,5 @@
 
-import { InstanceProps, Merged, useEnvironment, useGLTF, useTexture } from '@react-three/drei'
+import { InstanceProps, Merged, useDetectGPU, useEnvironment, useGLTF, useTexture } from '@react-three/drei'
 import { ObjectMap, useLoader } from '@react-three/fiber'
 import React, { FC, useEffect } from 'react'
 import * as THREE from 'three'
@@ -81,6 +81,8 @@ type GLTFResult = GLTF & ObjectMap & {
 export function BavanGallery(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/bavan_gallery_final.glb') as GLTFResult
 
+   const GPUTier = useDetectGPU() 
+
   //DIFFUSE MAps
   const smearedWallMap = useTexture('/Smeared_wall/Smeared Wall_BaseColor3.jpg')
   const smearedWallNormal = useTexture('/Smeared_wall/Smeared Wall_Normal.jpg')
@@ -95,6 +97,7 @@ export function BavanGallery(props: JSX.IntrinsicElements['group']) {
   const image_3_map = useTexture('/paintings/Image_3_front.jpg')
   const image_4_map = useTexture('/paintings/Image_4_front.jpg')
   const image_5_map = useTexture('/paintings/Image_5_front.jpg')
+
 
   //AO MAPS
   const insideWall_AO = useTexture('/ao/inside_wall_Bake1_PBR_Ambient_Occlusion.jpg')
@@ -176,10 +179,10 @@ export function BavanGallery(props: JSX.IntrinsicElements['group']) {
     map: blackMetalMap,
     normalMap: blackMetalNormal,
     roughnessMap: blackMetalRoughness,
-    envMap: groundEnv,
+    envMap: GPUTier.tier > 1 ?  groundEnv : undefined,
     roughness: 0.1,
     metalness: 0.9,
-    envMapIntensity: 0.1
+    envMapIntensity: GPUTier.tier > 1 ? 0.1 : 0 ,
   })
 
   nodes.single_lamp.material = blackMaterial

@@ -4,7 +4,7 @@ import { Canvas, useLoader } from '@react-three/fiber'
 import { Suspense, useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { ScrollTicker } from '@/templates/Scroll'
-import {  Preload, Stats, useTexture, useGLTF, BakeShadows, useDetectGPU } from '@react-three/drei'
+import {  Preload, Stats, useTexture, useGLTF, useDetectGPU } from '@react-three/drei'
 import { getProject } from '@theatre/core'
 import { RefreshSnapshot, SheetProvider } from '@theatre/r3f'
 // import extension from '@theatre/r3f/dist/extension'
@@ -161,7 +161,6 @@ const isMobile = width && width <768
         <Stats />
 
         <Suspense fallback={null}>
-          <BakeShadows />
           <SheetProvider sheet={bavanGallerySheet}>
             <PreloadAssets />
             <ScrollTicker />
