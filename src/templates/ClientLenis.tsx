@@ -19,7 +19,7 @@ export default function ClientLenis({ children }: { children: ReactNode }) {
 			root
 			ref={lenisRef}
 			options={{
-				duration: 1.4,
+				duration: 1.2,
 				easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
 				// lerp: 0.8,              // lower value for quicker interpolation
 				gestureOrientation: 'vertical',
@@ -29,13 +29,8 @@ export default function ClientLenis({ children }: { children: ReactNode }) {
 				syncTouch: true,  // better sync between touch and scroll
 				// syncTouchLerp: 0.075,      // optional: sync touch lerp if supported
 				// touchInertiaMultiplier: 2, // lower inertia for a smoother touch experience
-				touchMultiplier: 0.8,
-				infinite: false,  
-
-				// lerp:  0.225,
-				// anchors: true,
-				// autoRaf: false,
-				// autoResize: true,
+				// touchMultiplier: 0.8,
+				infinite: false,
 			}}
 		>
 			{children}
