@@ -375,7 +375,7 @@ useEffect(() => {
 
   
   useFrame(( {viewport}, delta) => {
-    if (introCompleted && scrollProgress.current * totalAnimation > 3 + 29 / 30 && scrollProgress * totalAnimation < totalAnimation - 2/30) {
+    if (introCompleted && (scrollProgress.current * totalAnimation > 3 + 29 / 30) && (scrollProgress.current * totalAnimation) < (totalAnimation - (2/30))) {
       bavanGallerySheet.sequence.position = damp(
         bavanGallerySheet.sequence.position,
         scrollProgress.current * totalAnimation,

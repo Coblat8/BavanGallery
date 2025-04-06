@@ -29,7 +29,7 @@ export default function ClientLenis({ children }: { children: ReactNode }) {
 				syncTouch: true,  // better sync between touch and scroll
 				// syncTouchLerp: 0.075,      // optional: sync touch lerp if supported
 				// touchInertiaMultiplier: 2, // lower inertia for a smoother touch experience
-				// touchMultiplier: 1,
+				touchMultiplier: 0.8,
 				infinite: false,  
 
 				// lerp:  0.225,
