@@ -14,8 +14,11 @@ import { useIsClient } from '@uidotdev/usehooks'
 export default function Experience() {
 
   const isMobile = window.innerWidth < 768
-  
-  const deviceLookAtRef = useRef(null)
+
+    const lookAtTarget = new THREE.Vector3(3.58, 5.37, 4.72)
+
+  const cameraLookAtRef = useRef(null)
+    const cameraRef = useRef(null)
   const spotLightTargetRef = useRef(new THREE.Object3D({ position: [0.19, 1.8, 4.54] }))
   const spotLightRef = useRef(null)
   const directionalLightRef = useRef(null)
@@ -42,6 +45,11 @@ export default function Experience() {
       spotLightRef.current.target.updateMatrixWorld()
     }
 
+    // Ensure camera lookAt is maintained
+    if (cameraRef.current && cameraLookAtRef.current) {
+      cameraRef.current.lookAt(cameraLookAtRef.current.position)
+    }
+
     // Get current opacity value from Theatre.js
     const currentOpacity = obj.value.opacity
 
@@ -54,7 +62,7 @@ export default function Experience() {
         materialRef.current.opacity = currentOpacity
       }
 
-    //   // Handle one-way transition to gallery using visibility instead of state
+      //   // Handle one-way transition to gallery using visibility instead of state
       if (currentOpacity >= 0.9 && showFirstObjectRef.current) {
         showFirstObjectRef.current = false
 
@@ -64,7 +72,6 @@ export default function Experience() {
       }
     }
   })
-
   const isClient = useIsClient()
   if(!isClient) return null
 
@@ -72,18 +79,18 @@ export default function Experience() {
   return (
     <>
       <PerspectiveCamera
+        ref={cameraRef}
         theatreKey="Camera"
         makeDefault
         fov={isMobile ? 80 : 60}
         position={[1, 2.5, 5]}
-        lookAt={deviceLookAtRef}
       />
 
       <e.mesh
-        ref={deviceLookAtRef}
+        ref={cameraLookAtRef}
         theatreKey="lookAt"
         visible="editor"
-        position={[3.58, 5.37, 4.72]}
+        position={lookAtTarget}
       >
         <boxGeometry args={[0.2, 0.2, 0.2]} />
         <meshBasicMaterial color="hotpink" />
@@ -102,35 +109,32 @@ export default function Experience() {
       />
 
       {/* Directional light with ref */}
-      {showFirstObjectRef.current && (
-        <e.directionalLight
-          ref={directionalLightRef}
-          theatreKey="Direction_light"
-          color={new THREE.Color(0xffffff)}
-          intensity={1}
-          position={[0, 10, 0]}
-          visible={showFirstObjectRef.current}
-        />
-      )}
+      <e.directionalLight
+        ref={directionalLightRef}
+        theatreKey="Direction_light"
+        color={new THREE.Color(0xffffff)}
+        intensity={1}
+        position={[0, 10, 0]}
+        visible={showFirstObjectRef.current}
+      />
 
       {/* Spot light with ref */}
-      {showFirstObjectRef.current && (
-        <e.spotLight
-          ref={spotLightRef}
-          theatreKey="spotLight"
-          intensity={50}
-          penumbra={2}
-          decay={0.5}
-          color={new THREE.Color(0xffffff)}
-          castShadow
-          position={[1.2, 0.5, 0.7]}
-          anglePower={20}
-          distance={10}
-          angle={0.3}
-          attenuation={0.4}
-          visible={showFirstObjectRef.current}
-        />
-      )}
+
+      <e.spotLight
+        ref={spotLightRef}
+        theatreKey="spotLight"
+        intensity={50}
+        penumbra={2}
+        decay={0.5}
+        color={new THREE.Color(0xffffff)}
+        castShadow
+        position={[1.2, 0.5, 0.7]}
+        anglePower={20}
+        distance={10}
+        angle={0.3}
+        attenuation={0.4}
+        visible={showFirstObjectRef.current}
+      />
 
       {/* Transition layer */}
       <e.mesh

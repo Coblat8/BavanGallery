@@ -4,7 +4,7 @@ import { Canvas, useLoader } from '@react-three/fiber'
 import { Suspense, useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { ScrollTicker } from '@/templates/Scroll'
-import { PerformanceMonitor, Preload, Stats, useTexture, useGLTF } from '@react-three/drei'
+import {  Preload, Stats, useTexture, useGLTF } from '@react-three/drei'
 import { getProject } from '@theatre/core'
 import { RefreshSnapshot, SheetProvider } from '@theatre/r3f'
 // import extension from '@theatre/r3f/dist/extension'
@@ -13,8 +13,11 @@ import { useAnimationStore } from 'lib/store/useAnimationStore'
 import projectState from '../../../public/Bavan Gallery Project.theatre-project-state-3.json'
 import Experience from './Experience'
 import LoadingScreen from './LoadingScreen'
-import { useIsClient } from '@uidotdev/usehooks'
 import { EXRLoader } from 'three/addons/loaders/EXRLoader.js'
+import { BavanGallery } from './BavanGallery'
+import { Yard } from './Yard'
+import { BavanLogo } from './BavanLogo'
+import { useIsClient } from '@uidotdev/usehooks'
 
 
 const isProd = true
@@ -37,9 +40,9 @@ export const bavanGallerySheet = project.sheet('Bavan Gallery Sheet')
 // const audio = new Audio('./audio/0406.mp3')
 
 
-// Create a PreloadAssets component that explicitly loads all textures
+// Improved PreloadAssets component - this is crucial
 function PreloadAssets() {
-  // Preload all your textures here
+  // Preload all regular textures
   useTexture([
     '/Smeared_wall/Smeared Wall_BaseColor3.jpg',
     '/Smeared_wall/Smeared Wall_Normal.jpg',
@@ -61,36 +64,34 @@ function PreloadAssets() {
     '/ao/top_walls_Bake1_PBR_Ambient_Occlusion.jpg',
   ])
 
-    function useEXRTexture(url) {
-      const texture = useLoader(EXRLoader, url, (loader) => {
-      })
-      texture.flipY = true
-      texture.needsUpdate = true
-      return texture
-    }
+  // Preload EXR lightmaps - important for correct loading detection
+  useLoader(EXRLoader, '/lightmaps/inside_wall_Bake1_PBR_Lightmap2.exr')
+  useLoader(EXRLoader, '/lightmaps/bottom_walls_Bake1_PBR_Lightmap3.exr')
+  useLoader(EXRLoader, '/lightmaps/ground_floor_1_Bake1_PBR_Lightmap2.exr')
+  useLoader(EXRLoader, '/lightmaps/ground_floor_2_Bake1_PBR_Lightmap2.exr')
+  useLoader(EXRLoader, '/lightmaps/top_walls_Bake1_PBR_Lightmap2.exr')
 
-    useEXRTexture('/lightmaps/inside_wall_Bake1_PBR_Lightmap2.exr')
-    useEXRTexture('/lightmaps/bottom_walls_Bake1_PBR_Lightmap3.exr')
-    useEXRTexture('/lightmaps/ground_floor_1_Bake1_PBR_Lightmap2.exr')
-    useEXRTexture('/lightmaps/ground_floor_2_Bake1_PBR_Lightmap2.exr')
-    useEXRTexture('/lightmaps/top_walls_Bake1_PBR_Lightmap2.exr')
-
-
-  // Preload all models
+  // Preload all models through the global useGLTF.preload
   useGLTF.preload('/bavan_gallery_final.glb')
   useGLTF.preload('/yard-transformed.glb')
   useGLTF.preload('/bavan_logo.glb')
 
-  return null
+  // Also instantiate the actual components to force-load their specific materials
+  // but make them invisible
+  return (
+    <group visible={false} position={[0, -1000, 0]}>
+      <BavanGallery />
+      <Yard />
+      <BavanLogo />
+    </group>
+  )
 }
 
 export default function Scene({ ...props }) {
-  const isClient = useIsClient()
   const audioRef = useRef(null)
   const setIntroCompleted = useAnimationStore((state) => state.setIntroCompleted)
   const [start, setStart] = useState(false)
-// const [dpr, setDpr] = useState(1.5)
-
+  const isClient = useIsClient()
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -116,15 +117,16 @@ export default function Scene({ ...props }) {
               setIntroCompleted(true)
             })
         })
-      }, 1000) // 4 seconds delay
+      }, 4000) // 4 seconds delay
 
       // Cleanup function to clear the timeout if component unmounts
       return () => clearTimeout(animationTimer)
     }
   }, [setIntroCompleted, start])
 
-  if(!isClient) return null
   const isMobile = window.innerWidth < 768
+
+  if(!isClient) return null
 
   return (
     <>
@@ -153,21 +155,16 @@ export default function Scene({ ...props }) {
         }}
       >
         <Stats />
-        {/* <PerformanceMonitor
-          bounds={(refreshrate) => (refreshrate > 90 ? [40, 90] : [45, 60])}
-          onIncline={() => setDpr(2)}
-          onDecline={() => setDpr(1.5)}
-          flipflops={3}
-          onFallback={() => setDpr(1.5)}
-        /> */}
         <Suspense fallback={null}>
-          <PreloadAssets />
           <SheetProvider sheet={bavanGallerySheet}>
+          <PreloadAssets />
             <ScrollTicker />
             <RefreshSnapshot />
             {/* <AdaptiveDpr pixelated /> */}
             {/* <Environment preset="city" /> */}
-            {start && <Experience />}
+            <group visible={start}>
+              <Experience />
+            </group>
             <Preload all />
           </SheetProvider>
         </Suspense>
