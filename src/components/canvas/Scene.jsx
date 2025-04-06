@@ -59,11 +59,6 @@ function PreloadAssets() {
     '/ao/ground_floor_1_Bake1_PBR_Ambient_Occlusion.jpg',
     '/ao/ground_floor_2_Bake1_PBR_Ambient_Occlusion.jpg',
     '/ao/top_walls_Bake1_PBR_Ambient_Occlusion.jpg',
-    // '/lightmaps/inside_wall_Bake1_PBR_Lightmap2.exr',
-    // '/lightmaps/bottom_walls_Bake1_PBR_Lightmap3.exr',
-    // '/lightmaps/ground_floor_1_Bake1_PBR_Lightmap2.exr',
-    // '/lightmaps/ground_floor_2_Bake1_PBR_Lightmap2.exr',
-    // '/lightmaps/top_walls_Bake1_PBR_Lightmap2.exr',
   ])
 
     function useEXRTexture(url) {
@@ -121,7 +116,7 @@ export default function Scene({ ...props }) {
               setIntroCompleted(true)
             })
         })
-      }, 3000) // 4 seconds delay
+      }, 1000) // 4 seconds delay
 
       // Cleanup function to clear the timeout if component unmounts
       return () => clearTimeout(animationTimer)
@@ -129,7 +124,7 @@ export default function Scene({ ...props }) {
   }, [setIntroCompleted, start])
 
   if(!isClient) return null
-const isMobile = window.innerWidth < 768
+  const isMobile = window.innerWidth < 768
 
   return (
     <>
