@@ -14,7 +14,7 @@ import projectState from '../../../public/Bavan Gallery Project.theatre-project-
 import Experience from './Experience'
 import LoadingScreen from './LoadingScreen'
 
-const isProd = false
+const isProd = true
 
 if (!isProd) {
   studio.initialize()
