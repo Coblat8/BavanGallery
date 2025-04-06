@@ -4,23 +4,24 @@ import { Canvas } from '@react-three/fiber'
 import { Suspense, useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { ScrollTicker } from '@/templates/Scroll'
-import { Preload, Stats } from '@react-three/drei'
+import { PerformanceMonitor, Preload, Stats } from '@react-three/drei'
 import { getProject } from '@theatre/core'
 import { RefreshSnapshot, SheetProvider } from '@theatre/r3f'
-import extension from '@theatre/r3f/dist/extension'
-import studio from '@theatre/studio'
+// import extension from '@theatre/r3f/dist/extension'
+// import studio from '@theatre/studio'
 import { useAnimationStore } from 'lib/store/useAnimationStore'
-import projectState from '../../../public/Bavan Gallery Project.theatre-project-state-2.json'
+import projectState from '../../../public/Bavan Gallery Project.theatre-project-state-3.json'
 import Experience from './Experience'
 import LoadingScreen from './LoadingScreen'
+import { useIsClient } from '@uidotdev/usehooks'
 
 const isProd = true
 
-if (!isProd) {
-  studio.initialize()
-  studio.extend(extension)
-  studio.ui.hide()
-}
+// if (!isProd) {
+//   studio.initialize()
+//   studio.extend(extension)
+//   studio.ui.hide()
+// }
 export const project = getProject(
   'Bavan Gallery Project',
   isProd
@@ -34,9 +35,11 @@ export const bavanGallerySheet = project.sheet('Bavan Gallery Sheet')
 // const audio = new Audio('./audio/0406.mp3')
 
 export default function Scene({ ...props }) {
+  const isClient = useIsClient()
   const audioRef = useRef(null)
   const setIntroCompleted = useAnimationStore((state) => state.setIntroCompleted)
   const [start, setStart] = useState(false)
+const [dpr, setDpr] = useState(1.5)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -69,6 +72,8 @@ export default function Scene({ ...props }) {
     }
   }, [setIntroCompleted, start])
 
+  if(!isClient) return null
+
   return (
     <>
       <Canvas
@@ -84,7 +89,7 @@ export default function Scene({ ...props }) {
           gl.clearDepth()
           gl.toneMapping = THREE.AgXToneMapping
         }}
-        dpr={1.5}
+        dpr={dpr}
         style={{
           zIndex: 30,
           position: 'fixed',
@@ -96,6 +101,13 @@ export default function Scene({ ...props }) {
         }}
       >
         <Stats />
+        <PerformanceMonitor
+          bounds={(refreshrate) => (refreshrate > 90 ? [40, 90] : [45, 60])}
+          onIncline={() => setDpr(2)}
+          onDecline={() => setDpr(1.5)}
+          flipflops={3}
+          onFallback={() => setDpr(1.5)}
+        />
         <Suspense fallback={null}>
           <SheetProvider sheet={bavanGallerySheet}>
             <ScrollTicker />

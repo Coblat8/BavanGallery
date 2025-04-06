@@ -7,8 +7,12 @@ import { BavanLogo } from './BavanLogo'
 import * as THREE from 'three'
 import { useCurrentSheet } from '@theatre/r3f'
 import { Sky } from '@react-three/drei'
+import { useIsClient } from '@uidotdev/usehooks'
 
 export default function Experience() {
+
+  const isMobile = window.innerWidth < 768
+  
   const deviceLookAtRef = useRef(null)
   const spotLightTargetRef = useRef(new THREE.Object3D({ position: [0.19, 1.8, 4.54] }))
   const spotLightRef = useRef(null)
@@ -59,12 +63,16 @@ export default function Experience() {
     }
   })
 
+  const isClient = useIsClient()
+  if(!isClient) return null
+
+
   return (
     <>
       <PerspectiveCamera
         theatreKey="Camera"
         makeDefault
-        fov={80}
+        fov={isMobile ? 80 : 60}
         position={[1, 2.5, 5]}
         lookAt={deviceLookAtRef}
       />

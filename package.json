@@ -19,6 +19,7 @@
     "@theatre/r3f": "^0.7.2",
     "@theatre/studio": "^0.7.2",
     "@types/three": "^0.174.0",
+    "@uidotdev/usehooks": "^2.4.1",
     "clsx": "^2.1.1",
     "glsl-random": "^0.0.5",
     "lenis": "^1.2.3",

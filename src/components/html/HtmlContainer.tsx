@@ -1,9 +1,14 @@
+'use client'
+
+import { useIsClient } from '@uidotdev/usehooks'
 import { useAnimationStore } from 'lib/store/useAnimationStore'
 import { AnimatePresence, motion } from 'motion/react'
 
 export default function HtmlContainer() {
 
 	const currentPainting = useAnimationStore(state => state.currentPainting)
+	const isClient = useIsClient()
+	if(!isClient) return null
 	const isMobile = window.innerWidth < 768
 	return (
 		<>
