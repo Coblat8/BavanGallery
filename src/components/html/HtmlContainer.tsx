@@ -11,7 +11,7 @@ export default function HtmlContainer() {
 	if(!isClient) return null
 
 	const isMobile = window.innerWidth < 768
-	
+
 	return (
 		<>
 			<AnimatePresence>
@@ -36,7 +36,7 @@ export default function HtmlContainer() {
 						key={currentPainting}
 						id="html-container"
 						className='fixed top-[70vh] lg:top-1/2 lg:-translate-y-1/2 left-1/2 lg:right-40 bg-neutral-500/20 backdrop-blur-lg flex flex-col shrink-0 items-start justify-start gap-4 w-full h-[30vh] lg:w-[34rem] lg:h-[36rem] rounded-2xl shadow-lg drop-shadow-lg z-50 '>
-						<div className=" flex flex-col gap-4 pt-4 lg:pt-16">
+						<div className=" flex flex-col gap-2 lg:gap-4 pt-4 lg:pt-16">
 							<motion.h2
 								initial={{ opacity: 0, y: -50, }}
 								animate={{ opacity: 1, y: 0, }}
@@ -49,7 +49,7 @@ export default function HtmlContainer() {
 								exit={{ opacity: 0, }}
 								transition={{ duration: 0.8, delay: 0.6, ease: 'easeOut' }}
 								className=" text-sm lg:text-xl font-outfit text-neutral-900/80 px-16">
-								Created entirely from woven wool, this piece replaces traditional brushstrokes with layered fibers. The rich crimson shapes emerge organically, resembling natural patterns or cellular forms. Its soft texture and flowing composition invite quiet reflection on material and movement.
+								Created entirely from woven wool, this piece replaces traditional brushstrokes with layered fibers. The rich crimson shapes emerge organically, resembling natural patterns or cellular forms.
 							</motion.p>
 							<span className=" font-outfit text-neutral-900/70 py-6 px-16"> untitiled, Sepideh Farzam, 2025</span>
 						</div>
