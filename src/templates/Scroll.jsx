@@ -84,9 +84,9 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
           if (lenis.direction === 1) {
             lenis.scrollTo((stopPoints.stop1_next / totalAnimation) * lenis.limit, {
               immediate: false,
-              // duration: 3,
+              duration: 3,
               // lock:true,
-              duration: 6,
+              // duration: 6,
               // easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),    
               onStart: () => {
                 setCurrentPainting(1)
@@ -114,7 +114,7 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
               
               lenis.scrollTo((stopPoints.stop1_next / totalAnimation) * lenis.limit, {
                 immediate: false,
-                duration: 6,
+                // duration: 6,
                 onStart: () => {
                   setCurrentPainting(1)
                   // lenis.options.prevent = true
@@ -137,7 +137,7 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
             
             lenis.scrollTo((stopPoints.stop2_next / totalAnimation) * lenis.limit, {
               immediate: false,
-              duration: 6,
+              // duration: 6,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
               onStart: () => setCurrentPainting(2),
               onComplete: () => {
@@ -164,7 +164,7 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
             
             lenis.scrollTo((stopPoints.stop2_next / totalAnimation) * lenis.limit, {
               immediate: false,
-              duration: 3.0,
+              // duration: 3.0,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
               onStart: () => setCurrentPainting(2),
               onComplete: () => {
@@ -185,7 +185,7 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
             
             lenis.scrollTo((stopPoints.stop3_next / totalAnimation) * lenis.limit, {
               immediate: false,
-              duration: 6,
+              // duration: 6,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
               onStart: () => setCurrentPainting(3),
               onComplete: () => {
@@ -212,7 +212,7 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
             
             lenis.scrollTo((stopPoints.stop3_next / totalAnimation) * lenis.limit, {
               immediate: false,
-              duration: 6,
+              // duration: 6,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
               onStart: () => setCurrentPainting(3),
               onComplete: () => {
@@ -233,7 +233,7 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
             
             lenis.scrollTo((stopPoints.stop4_next / totalAnimation) * lenis.limit, {
               immediate: false,
-              duration: 6,
+              // duration: 6,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
               onStart: () => setCurrentPainting(4),
               onComplete: () => {
@@ -260,7 +260,7 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
             
             lenis.scrollTo((stopPoints.stop4_next / totalAnimation) * lenis.limit, {
               immediate: false,
-              duration: 6,
+              // duration: 6,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
               onStart: () => setCurrentPainting(4),
               onComplete: () => {
@@ -281,7 +281,7 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
             
             lenis.scrollTo((stopPoints.stop5_next / totalAnimation) * lenis.limit, {
               immediate: false,
-              duration: 6,
+              // duration: 6,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
               onStart: () => setCurrentPainting(5),
               onComplete: () => {
@@ -308,7 +308,7 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
             
             lenis.scrollTo((stopPoints.stop5_next / totalAnimation) * lenis.limit, {
               immediate: false,
-              duration: 6,
+              // duration: 6,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
               onStart: () => setCurrentPainting(5),
               onComplete: () => {
@@ -325,7 +325,7 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
           
           lenis.scrollTo(lenis.limit, {
             immediate: false,
-            duration: 3,
+            // duration: 3,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             onComplete: () => {
               const resetPoint = ((11 + 10 / 30) / (31 + 10 / 30)) * lenis.limit // 20% of total height
@@ -367,13 +367,13 @@ useEffect(() => {
   
   useFrame(( {viewport}, delta) => {
     if (introCompleted && scrollProgress.current * totalAnimation > 3 + 29 / 30) {
-      bavanGallerySheet.sequence.position = damp(
-        bavanGallerySheet.sequence.position,
-        scrollProgress.current * totalAnimation,
-        smooth,
-        delta
-      )
-      //  bavanGallerySheet.sequence.position = scrollProgress.current * totalAnimation
+      // bavanGallerySheet.sequence.position = damp(
+      //   bavanGallerySheet.sequence.position,
+      //   scrollProgress.current * totalAnimation,
+      //   smooth,
+      //   delta
+      // )
+       bavanGallerySheet.sequence.position = scrollProgress.current * totalAnimation
     }
   })
 

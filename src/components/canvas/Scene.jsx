@@ -156,7 +156,7 @@ export default function Scene({ ...props }) {
           pointerEvents: 'auto',
         }}
       >
-        {/* <Stats /> */}
+        <Stats />
 
         <Suspense fallback={null}>
           <SheetProvider sheet={bavanGallerySheet}>
