@@ -3,14 +3,17 @@
 import Scene from "@/components/canvas/Scene"
 import HtmlContainer from "@/components/html/HtmlContainer"
 import ScrollSignAnimation from "@/components/html/ScrollSignAnimation"
-
-import {  useLayoutEffect } from 'react'
+import { useLenis } from "lenis/react"
+import {  useEffect } from 'react'
 
 export default function Page() {
 
-  useLayoutEffect(() => {
-    window.scrollTo(0, 0)
-  })
+  const lenis = useLenis()
+
+  useEffect(() => {
+    if(lenis)
+    lenis.scrollTo(1,{immediate:true})
+  },[lenis])
 
  
   return (

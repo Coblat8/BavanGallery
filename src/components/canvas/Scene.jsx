@@ -10,14 +10,14 @@ import { RefreshSnapshot, SheetProvider } from '@theatre/r3f'
 // import extension from '@theatre/r3f/dist/extension'
 // import studio from '@theatre/studio'
 import { useAnimationStore } from 'lib/store/useAnimationStore'
-import projectState from '../../../public/Bavan Gallery Project.theatre-project-state-3.json'
+import projectState from '../../../public/Bavan Gallery Project.theatre-project-state-1.json'
 import Experience from './Experience'
 import LoadingScreen from './LoadingScreen'
 import { EXRLoader } from 'three/addons/loaders/EXRLoader.js'
 import { BavanGallery } from './BavanGallery'
 import { Yard } from './Yard'
 import { BavanLogo } from './BavanLogo'
-import { useIsClient, useWindowSize } from '@uidotdev/usehooks'
+import { useIsClient } from '@uidotdev/usehooks'
 
 
 const isProd = true
@@ -36,8 +36,6 @@ export const project = getProject(
     : undefined
 )
 export const bavanGallerySheet = project.sheet('Bavan Gallery Sheet')
-
-// const audio = new Audio('./audio/0406.mp3')
 
 
 // Improved PreloadAssets component - this is crucial
@@ -92,11 +90,9 @@ export default function Scene({ ...props }) {
   const setIntroCompleted = useAnimationStore((state) => state.setIntroCompleted)
   const [start, setStart] = useState(false)
   const isClient = useIsClient()
-const {width} = useWindowSize()
+
  const GPUTier = useDetectGPU()
 
- console.log(GPUTier.tier)
-const isMobile = width && width <768
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -109,20 +105,20 @@ const isMobile = width && width <768
       
       audioRef.current.play()
       audioRef.current.loop = true
-
       // Delay the animation by 4 seconds
       const animationTimer = setTimeout(() => {
         project.ready.then(() => {
+          bavanGallerySheet.sequence.position = 0
           bavanGallerySheet.sequence
             .play({
-              range: [0, 3 + 24 / 30],
+              range: [0, 3 + 29 / 30],
             })
             .then(() => {
               // bavanGallerySheet.sequence.pause()
               setIntroCompleted(true)
             })
         })
-      }, 1000) // 4 seconds delay
+      }, 2500) // 4 seconds delay
 
       // Cleanup function to clear the timeout if component unmounts
       return () => clearTimeout(animationTimer)
@@ -167,16 +163,19 @@ const isMobile = width && width <768
             <RefreshSnapshot />
             {/* <AdaptiveDpr pixelated /> */}
             {/* <Environment preset="city" /> */}
-            <group visible={start}>
-              <Experience />
-            </group>
+            
+             {start && <Experience />}
+            
             <Preload all />
           </SheetProvider>
         </Suspense>
       </Canvas>
       <LoadingScreen
         started={start}
-        onStarted={() => setStart(true)}
+        onStarted={() =>{ 
+
+          setStart(true)
+        }}
       />
     </>
   )

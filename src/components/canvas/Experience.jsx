@@ -36,9 +36,6 @@ const setInputGroupVisible = useAnimationStore((state) => state.setInputGroupVis
 
   // Handle all updates in useFrame
   useFrame(() => {
-    // Setup spotlight target once
-
-
     // Ensure camera lookAt is maintained
     if (cameraRef.current && cameraLookAtRef.current) {
       cameraRef.current.lookAt(cameraLookAtRef.current.position)
@@ -123,7 +120,7 @@ const setInputGroupVisible = useAnimationStore((state) => state.setInputGroupVis
       </e.mesh>
 
       <IntroScene />
-      
+
       <group
         ref={galleryGroupRef}
         visible={false}

@@ -21,6 +21,7 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
   const setScrollSign = useAnimationStore(state=> state.setScrollSign)
   const scrollSign = useAnimationStore(state=> state.scrollSign)
   const introCompleted = useAnimationStore(state => state.introCompleted)
+  const inputGroupVisible = useAnimationStore((state) => state.inputGroupVisible)
 
   const lenis = useLenis()
   const scrollProgress = useRef(0)
@@ -33,9 +34,11 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
     if(scrollTop.current < (lenis.limit - 10)  && animationComplete.current) {
       animationComplete.current = false
     }
-    if (scrollTop.current >= (lenis.limit - 5)  && !animationComplete.current) {
+    if (scrollTop.current >= (lenis.limit  )  && !animationComplete.current && introCompleted) {
       const resetPoint = ((11 + 10/30) / (31 + 10/30)) * lenis.limit  // 20% of total height
-      lenis.scrollTo(resetPoint, { immediate: true }) // Reset without transition
+      lenis.scrollTo(resetPoint, {
+        immediate: true,
+      }) // Reset without transition
       scrollTop.current = resetPoint
       scrollProgress.current = (11 + 10 / 30) / totalAnimation
       animationComplete.current = true
@@ -67,229 +70,239 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
     else if ( (lenis.velocity > 0.1 || lenis.velocity < -0.1) && scrollSign ) {
       setScrollSign(false)
     }
-    if (
-      scrollProgress.current * totalAnimation > stopPoints.stop1_start &&
-      scrollProgress.current * totalAnimation < stopPoints.stop1_next + 20 / 30
-    ) {
-      if (scrollProgress.current * totalAnimation < stopPoints.stop1_end) {
-        if (lenis.direction === 1) {
-          lenis.scrollTo((stopPoints.stop1_next / totalAnimation) * lenis.limit, {
-            immediate: false,
-            duration: 3.6,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            lerp: 0.2,
-            onStart: () => setCurrentPainting(1),
-          })
-        } else {
-          if (scrollProgress.current * totalAnimation < stopPoints.stop1_end - 10 / 30) {
-            setCurrentPainting(0)
-          }
-        }
-      } else if (
-        scrollProgress.current * totalAnimation >= stopPoints.stop1_end &&
-        scrollProgress.current * totalAnimation <= stopPoints.stop1_next
-      ) {
-        setCurrentPainting(1)
-      } else if (
-        scrollProgress.current * totalAnimation > stopPoints.stop1_next &&
+
+    if (scrollProgress.current * totalAnimation < (3 + 29 / 30) ) {
+      lenis.scrollTo((3 + 29 / 30) / totalAnimation * lenis.limit, {
+        immediate: true
+      })
+    }
+      if (
+        scrollProgress.current * totalAnimation > stopPoints.stop1_start &&
         scrollProgress.current * totalAnimation < stopPoints.stop1_next + 20 / 30
       ) {
-        if (lenis.direction === 1) {
-          setCurrentPainting(0)
-        } else if (lenis.direction === -1) {
-          lenis.scrollTo((stopPoints.stop1_next / totalAnimation) * lenis.limit, {
-            immediate: false,
-            duration: 3.6,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            lerp: 0.9,
-            onStart: () => setCurrentPainting(1),
-          })
-        }
-      }
-    }
-
-    // second painting
-    else if (
-      scrollProgress.current * totalAnimation > stopPoints.stop2_start &&
-      scrollProgress.current * totalAnimation < stopPoints.stop2_next + 20 / 30
-    ) {
-      if (scrollProgress.current * totalAnimation < stopPoints.stop2_end) {
-        if (lenis.direction === 1) {
-          lenis.scrollTo((stopPoints.stop2_next / totalAnimation) * lenis.limit, {
-            immediate: false,
-            duration: 6.5,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            lerp: 1,
-            onStart: () => setCurrentPainting(2),
-          })
-        } else {
-          if (scrollProgress.current * totalAnimation < stopPoints.stop2_end - 10 / 30) {
+        if (scrollProgress.current * totalAnimation < stopPoints.stop1_end) {
+          if (lenis.direction === 1) {
+            lenis.scrollTo((stopPoints.stop1_next / totalAnimation) * lenis.limit, {
+              immediate: false,
+              duration: 3.6,
+              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+              lerp: 0.2,
+              onStart: () => setCurrentPainting(1),
+            })
+          } else {
+            if (scrollProgress.current * totalAnimation < stopPoints.stop1_end - 10 / 30) {
+              setCurrentPainting(0)
+            }
+          }
+        } else if (
+          scrollProgress.current * totalAnimation >= stopPoints.stop1_end &&
+          scrollProgress.current * totalAnimation <= stopPoints.stop1_next
+        ) {
+          setCurrentPainting(1)
+        } else if (
+          scrollProgress.current * totalAnimation > stopPoints.stop1_next &&
+          scrollProgress.current * totalAnimation < stopPoints.stop1_next + 20 / 30
+        ) {
+          if (lenis.direction === 1) {
             setCurrentPainting(0)
+          } else if (lenis.direction === -1) {
+            lenis.scrollTo((stopPoints.stop1_next / totalAnimation) * lenis.limit, {
+              immediate: false,
+              duration: 3.6,
+              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+              lerp: 0.9,
+              onStart: () => setCurrentPainting(1),
+            })
           }
         }
-      } else if (
-        scrollProgress.current * totalAnimation >= stopPoints.stop2_end &&
-        scrollProgress.current * totalAnimation <= stopPoints.stop2_next
-      ) {
-        setCurrentPainting(2)
-      } else if (
-        scrollProgress.current * totalAnimation > stopPoints.stop2_next &&
+      }
+
+      // second painting
+      else if (
+        scrollProgress.current * totalAnimation > stopPoints.stop2_start &&
         scrollProgress.current * totalAnimation < stopPoints.stop2_next + 20 / 30
       ) {
-        if (lenis.direction === 1) {
-          setCurrentPainting(0)
-        } else if (lenis.direction === -1) {
-          lenis.scrollTo((stopPoints.stop2_next / totalAnimation) * lenis.limit, {
-            immediate: false,
-            duration: 3.0,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            lerp: 0.5,
-            onStart: () => setCurrentPainting(2),
-          })
-        }
-      }
-    }
-
-    // third painting
-    else if (
-      scrollProgress.current * totalAnimation > stopPoints.stop3_start &&
-      scrollProgress.current * totalAnimation < stopPoints.stop3_next + 20 / 30
-    ) {
-      if (scrollProgress.current * totalAnimation < stopPoints.stop3_end) {
-        if (lenis.direction === 1) {
-          lenis.scrollTo((stopPoints.stop3_next / totalAnimation) * lenis.limit, {
-            immediate: false,
-            duration: 6.6,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            lerp: 0.9,
-            onStart: () => setCurrentPainting(3),
-          })
-        } else {
-          if (scrollProgress.current * totalAnimation < stopPoints.stop3_end - 10 / 30) {
+        if (scrollProgress.current * totalAnimation < stopPoints.stop2_end) {
+          if (lenis.direction === 1) {
+            lenis.scrollTo((stopPoints.stop2_next / totalAnimation) * lenis.limit, {
+              immediate: false,
+              duration: 6.5,
+              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+              lerp: 1,
+              onStart: () => setCurrentPainting(2),
+            })
+          } else {
+            if (scrollProgress.current * totalAnimation < stopPoints.stop2_end - 10 / 30) {
+              setCurrentPainting(0)
+            }
+          }
+        } else if (
+          scrollProgress.current * totalAnimation >= stopPoints.stop2_end &&
+          scrollProgress.current * totalAnimation <= stopPoints.stop2_next
+        ) {
+          setCurrentPainting(2)
+        } else if (
+          scrollProgress.current * totalAnimation > stopPoints.stop2_next &&
+          scrollProgress.current * totalAnimation < stopPoints.stop2_next + 20 / 30
+        ) {
+          if (lenis.direction === 1) {
             setCurrentPainting(0)
+          } else if (lenis.direction === -1) {
+            lenis.scrollTo((stopPoints.stop2_next / totalAnimation) * lenis.limit, {
+              immediate: false,
+              duration: 3.0,
+              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+              lerp: 0.5,
+              onStart: () => setCurrentPainting(2),
+            })
           }
         }
-      } else if (
-        scrollProgress.current * totalAnimation >= stopPoints.stop3_end &&
-        scrollProgress.current * totalAnimation <= stopPoints.stop3_next
-      ) {
-        setCurrentPainting(3)
-      } else if (
-        scrollProgress.current * totalAnimation > stopPoints.stop3_next &&
+      }
+
+      // third painting
+      else if (
+        scrollProgress.current * totalAnimation > stopPoints.stop3_start &&
         scrollProgress.current * totalAnimation < stopPoints.stop3_next + 20 / 30
       ) {
-        if (lenis.direction === 1) {
-          setCurrentPainting(0)
-        } else if (lenis.direction === -1) {
-          lenis.scrollTo((stopPoints.stop3_next / totalAnimation) * lenis.limit, {
-            immediate: false,
-            duration: 3.8,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            lerp: 0.5,
-            onStart: () => setCurrentPainting(3),
-          })
-        }
-      }
-    }
-
-    // 4rd painting
-    else if (
-      scrollProgress.current * totalAnimation > stopPoints.stop4_start &&
-      scrollProgress.current * totalAnimation < stopPoints.stop4_next + 20 / 30
-    ) {
-      if (scrollProgress.current * totalAnimation < stopPoints.stop4_end) {
-        if (lenis.direction === 1) {
-          lenis.scrollTo((stopPoints.stop4_next / totalAnimation) * lenis.limit, {
-            immediate: false,
-            duration: 5.6,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            lerp: 0.9,
-            onStart: () => setCurrentPainting(4),
-          })
-        } else {
-          if (scrollProgress.current * totalAnimation < stopPoints.stop4_end - 10 / 30) {
+        if (scrollProgress.current * totalAnimation < stopPoints.stop3_end) {
+          if (lenis.direction === 1) {
+            lenis.scrollTo((stopPoints.stop3_next / totalAnimation) * lenis.limit, {
+              immediate: false,
+              duration: 6.6,
+              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+              lerp: 0.9,
+              onStart: () => setCurrentPainting(3),
+            })
+          } else {
+            if (scrollProgress.current * totalAnimation < stopPoints.stop3_end - 10 / 30) {
+              setCurrentPainting(0)
+            }
+          }
+        } else if (
+          scrollProgress.current * totalAnimation >= stopPoints.stop3_end &&
+          scrollProgress.current * totalAnimation <= stopPoints.stop3_next
+        ) {
+          setCurrentPainting(3)
+        } else if (
+          scrollProgress.current * totalAnimation > stopPoints.stop3_next &&
+          scrollProgress.current * totalAnimation < stopPoints.stop3_next + 20 / 30
+        ) {
+          if (lenis.direction === 1) {
             setCurrentPainting(0)
+          } else if (lenis.direction === -1) {
+            lenis.scrollTo((stopPoints.stop3_next / totalAnimation) * lenis.limit, {
+              immediate: false,
+              duration: 3.8,
+              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+              lerp: 0.5,
+              onStart: () => setCurrentPainting(3),
+            })
           }
         }
-      } else if (
-        scrollProgress.current * totalAnimation >= stopPoints.stop4_end &&
-        scrollProgress.current * totalAnimation <= stopPoints.stop4_next
-      ) {
-        setCurrentPainting(4)
-      } else if (
-        scrollProgress.current * totalAnimation > stopPoints.stop4_next &&
+      }
+
+      // 4rd painting
+      else if (
+        scrollProgress.current * totalAnimation > stopPoints.stop4_start &&
         scrollProgress.current * totalAnimation < stopPoints.stop4_next + 20 / 30
       ) {
-        if (lenis.direction === 1) {
-          setCurrentPainting(0)
-        } else if (lenis.direction === -1) {
-          lenis.scrollTo((stopPoints.stop4_next / totalAnimation) * lenis.limit, {
-            immediate: false,
-            duration: 3.8,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            lerp: 0.5,
-            onStart: () => setCurrentPainting(4),
-          })
-        }
-      }
-    }
-
-    // 5th painting
-    else if (
-      scrollProgress.current * totalAnimation > stopPoints.stop5_start &&
-      scrollProgress.current * totalAnimation < stopPoints.stop5_next + 1
-    ) {
-      if (scrollProgress.current * totalAnimation < stopPoints.stop5_end) {
-        if (lenis.direction === 1) {
-          lenis.scrollTo((stopPoints.stop5_next / totalAnimation) * lenis.limit, {
-            immediate: false,
-            duration: 5.6,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            lerp: 0.9,
-            onStart: () => setCurrentPainting(5),
-          })
-        } else {
-          if (scrollProgress.current * totalAnimation < stopPoints.stop5_end - 10 / 30) {
+        if (scrollProgress.current * totalAnimation < stopPoints.stop4_end) {
+          if (lenis.direction === 1) {
+            lenis.scrollTo((stopPoints.stop4_next / totalAnimation) * lenis.limit, {
+              immediate: false,
+              duration: 5.6,
+              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+              lerp: 0.9,
+              onStart: () => setCurrentPainting(4),
+            })
+          } else {
+            if (scrollProgress.current * totalAnimation < stopPoints.stop4_end - 10 / 30) {
+              setCurrentPainting(0)
+            }
+          }
+        } else if (
+          scrollProgress.current * totalAnimation >= stopPoints.stop4_end &&
+          scrollProgress.current * totalAnimation <= stopPoints.stop4_next
+        ) {
+          setCurrentPainting(4)
+        } else if (
+          scrollProgress.current * totalAnimation > stopPoints.stop4_next &&
+          scrollProgress.current * totalAnimation < stopPoints.stop4_next + 20 / 30
+        ) {
+          if (lenis.direction === 1) {
             setCurrentPainting(0)
+          } else if (lenis.direction === -1) {
+            lenis.scrollTo((stopPoints.stop4_next / totalAnimation) * lenis.limit, {
+              immediate: false,
+              duration: 3.8,
+              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+              lerp: 0.5,
+              onStart: () => setCurrentPainting(4),
+            })
           }
         }
-      } else if (
-        scrollProgress.current * totalAnimation >= stopPoints.stop5_end &&
-        scrollProgress.current * totalAnimation <= stopPoints.stop5_next
-      ) {
-        setCurrentPainting(5)
-      } else if (
-        scrollProgress.current * totalAnimation > stopPoints.stop5_next &&
+      }
+
+      // 5th painting
+      else if (
+        scrollProgress.current * totalAnimation > stopPoints.stop5_start &&
         scrollProgress.current * totalAnimation < stopPoints.stop5_next + 1
       ) {
-        if (lenis.direction === 1) {
-          setCurrentPainting(0)
-        } else if (lenis.direction === -1) {
-          lenis.scrollTo((stopPoints.stop5_next / totalAnimation) * lenis.limit, {
-            immediate: false,
-            duration: 4.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            lerp: 0.9,
-            onStart: () => setCurrentPainting(5),
-          })
+        if (scrollProgress.current * totalAnimation < stopPoints.stop5_end) {
+          if (lenis.direction === 1) {
+            lenis.scrollTo((stopPoints.stop5_next / totalAnimation) * lenis.limit, {
+              immediate: false,
+              duration: 5.6,
+              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+              lerp: 0.9,
+              onStart: () => setCurrentPainting(5),
+            })
+          } else {
+            if (scrollProgress.current * totalAnimation < stopPoints.stop5_end - 10 / 30) {
+              setCurrentPainting(0)
+            }
+          }
+        } else if (
+          scrollProgress.current * totalAnimation >= stopPoints.stop5_end &&
+          scrollProgress.current * totalAnimation <= stopPoints.stop5_next
+        ) {
+          setCurrentPainting(5)
+        } else if (
+          scrollProgress.current * totalAnimation > stopPoints.stop5_next &&
+          scrollProgress.current * totalAnimation < stopPoints.stop5_next + 1
+        ) {
+          if (lenis.direction === 1) {
+            setCurrentPainting(0)
+          } else if (lenis.direction === -1) {
+            lenis.scrollTo((stopPoints.stop5_next / totalAnimation) * lenis.limit, {
+              immediate: false,
+              duration: 4.2,
+              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+              lerp: 0.9,
+              onStart: () => setCurrentPainting(5),
+            })
+          }
         }
       }
-    }
   }
 
 
-useEffect(()=>{
-   lenis.scrollTo(( (3 + 27 / 30) / totalAnimation) * lenis.limit, {
-            immediate: true,})
-},[introCompleted])
+useEffect(() => {
+  lenis.scrollTo((4 / totalAnimation) * lenis.limit, {
+    immediate: false,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  })
+}, [inputGroupVisible])
 
 
 // useEffect(() => {
     lenis.on('scroll', ({ scroll, progress }) => {
-      scrollTop.current = scroll
-      scrollProgress.current = progress
-      updateScrollState()
-      detectStops()
+           if (introCompleted) {
+             scrollTop.current = scroll
+             scrollProgress.current = progress
+             updateScrollState()
+             detectStops()
+           }
     })
   //   return () => {
   //     lenis.off('scroll')
@@ -299,7 +312,7 @@ useEffect(()=>{
 
   
   useFrame(( {viewport}, delta) => {
-    if (introCompleted && scrollProgress.current * totalAnimation > 3 + 26 / 30) {
+    if (introCompleted && scrollProgress.current * totalAnimation > 3 + 29 / 30) {
       bavanGallerySheet.sequence.position = damp(
         bavanGallerySheet.sequence.position,
         scrollProgress.current * totalAnimation,
