@@ -19,10 +19,8 @@ export default function ScrollSignAnimation() {
 							exit={{ opacity: 0 }}
 							transition={{ duration: 0.5, ease: 'easeOut' }}
 							// key={currentPainting}
-							className=" flex w-10 h-16 lg:w-16 lg:h-20 justify-center items-center border-neutral-900 rounded-full backdrop-blur-lg z-50"
+							className=" flex w-10 h-16 lg:w-16 lg:h-24 justify-center items-center border-neutral-900 rounded-full backdrop-blur-lg z-50"
 							style={{
-								width: 60,
-								height: 84,
 								borderWidth: 4,
 								borderColor: '#171717'
 							}}
@@ -45,12 +43,9 @@ export default function ScrollSignAnimation() {
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
 							transition={{ duration: 0.5, ease: 'easeOut' }}
-							className=" text-base lg:text-xl font-baumans font-semibold flex w-full items-center justify-center px-2 py-2 backdrop-blur-lg shadow-sm shadow-neutral-700 rounded-3xl"
+							className=" text-base lg:text-xl font-baumans font-semibold flex w-fit items-center justify-center px-4 lg:px-6 py-2 backdrop-blur-lg shadow-sm shadow-neutral-700 rounded-3xl"
 							style={{ 
 								color: '#171717 ', 
-								fontWeight: 600,
-								paddingLeft: '1rem',
-								paddingRight: '1rem',
 								borderRadius: '1.5rem'
 							 }}
 						> SWIPE/SCROLL TO MOVE</motion.span>
