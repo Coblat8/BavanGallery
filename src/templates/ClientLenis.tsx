@@ -30,7 +30,7 @@ export default function ClientLenis({ children }: { children: ReactNode }) {
 				// syncTouchLerp: 0.075,      // optional: sync touch lerp if supported
 				// touchInertiaMultiplier: 2, // lower inertia for a smoother touch experience
 				// touchMultiplier: 0.7,
-				infinite: false,
+				infinite: true,
 			}}
 		>
 			{children}
