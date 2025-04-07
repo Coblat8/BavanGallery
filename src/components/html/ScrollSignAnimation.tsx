@@ -1,11 +1,39 @@
+import { useLenis } from "lenis/react"
 import { useAnimationStore } from "lib/store/useAnimationStore"
 import { AnimatePresence, motion } from "motion/react"
+import { useEffect, useRef, useState } from "react"
 
 export default function ScrollSignAnimation() {
 
-	const scrollSign = useAnimationStore(state => state.scrollSign)
+	// const scrollSign = useAnimationStore(state => state.scrollSign)
 	const currentPainting = useAnimationStore(state => state.currentPainting)
 	const introCompleted = useAnimationStore(state => state.introCompleted)
+	const lenis = useLenis()
+	const [scrollSign, setScrollSign] = useState(true)
+	const scrollProgress = useRef(0)
+
+	const detectStops = () => {
+		if (!lenis) return
+		if (lenis.velocity < 0.1 && lenis.velocity > -0.1 && !scrollSign) {
+			setScrollSign(true)
+		}
+		else if ((lenis.velocity > 0.1 || lenis.velocity < -0.1) && scrollSign) {
+			setScrollSign(false)
+		}
+	}
+
+useEffect(()=> {
+		if(!lenis) return
+		lenis.on('scroll', ({ scroll, progress }) => {
+			// if (introCompleted) {
+				scrollProgress.current = progress
+				detectStops()
+			// }
+		})
+		return () => {
+			lenis.destroy()
+		  }
+	},[lenis])
 
 	return (
 		<>

@@ -1,6 +1,6 @@
 import { useProgress } from "@react-three/drei"
 import LoadingLogo from "../ui/loadingLogo"
-import { motion } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from "react"
 
 type LoadingProps = {
@@ -27,15 +27,25 @@ export default function LoadingScreen({ started, onStarted }: LoadingProps) {
 	// console.log('Loading:', { item, active, total, progress: Math.round(progress) })
 
 	return (
-		<div className={`loadingScreen flex-col w-screen h-screen pt-44 md:pt-60 ${started ? " opacity-0 transition-opacity duration-700 delay-500 loadingScreen--started" : ""}`}>
-			<div className="loadingScreen__logo">
+		<AnimatePresence mode="wait">
+		{!started &&
+		<motion.div
+					initial={{ opacity: 1 }}
+					animate={{ opacity: 1}}
+					exit={{ opacity: 0  }}
+					transition={{ duration: 1, delay:1 }}
+		 className={`loadingScreen flex-col w-screen h-screen bg-[#09090C] pt-56 md:pt-60 `}>
+			<div className={`loadingScreen__logo `}>
+				
 				<motion.div
-					// initial={{ fillOpacity: 0 }}
-					// animate={{ fillOpacity: progress / 100 }}
-					// transition={{ duration: 2 }}
+					initial={{ fillOpacity: 0 }}
+					animate={{ fillOpacity: progress / 100 }}
+					exit={{opacity: 0, transition:{duration: 1}}}
+					transition={{ duration: 1 }}
 				>
 					<LoadingLogo progress={progress} total={total} />
 				</motion.div>
+				
 			</div>
 			<div className="relative top-auto lg:-top-20 flex flex-col w-full justify-center items-center">
 			<span className={`font-teko text-neutral-200 text-lg  ${total === 63 ? " opacity-0 transition-opacity duration-300" : ""}`}>{Math.floor(total * 100 / 63)}%</span>
@@ -47,6 +57,7 @@ export default function LoadingScreen({ started, onStarted }: LoadingProps) {
 				{readyToStart ? "Start the experience" : "Processing assets..."}
 			</button>
 				</div>
-		</div>
+		</motion.div>}
+		</AnimatePresence >
 	)
 }

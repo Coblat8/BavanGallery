@@ -24,6 +24,11 @@
     display: none
 }
 
+.text_card{
+  background: rgba(115, 115, 115 , 0.2);
+  backdrop-filter: blur(7.3px);
+}
+
 .bowlby-one-sc-regular {
   font-family: "Bowlby One SC", sans-serif;
   font-weight: 400;

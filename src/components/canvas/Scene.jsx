@@ -7,8 +7,8 @@ import { ScrollTicker } from '@/templates/Scroll'
 import {  Preload, Stats, useTexture, useGLTF, useDetectGPU } from '@react-three/drei'
 import { getProject } from '@theatre/core'
 import { RafDriverProvider, RefreshSnapshot, SheetProvider } from '@theatre/r3f'
-// import extension from '@theatre/r3f/dist/extension'
-// import studio from '@theatre/studio'
+import extension from '@theatre/r3f/dist/extension'
+import studio from '@theatre/studio'
 import { useAnimationStore } from 'lib/store/useAnimationStore'
 import projectState from '../../../public/Bavan Gallery Project.theatre-project-state-3.json'
 import Experience from './Experience'
@@ -21,13 +21,13 @@ import { useIsClient } from '@uidotdev/usehooks'
 import { theatreRafDriver } from './CustomRafDriver'
 
 
-const isProd = true
+const isProd = false
 
-// if (!isProd) {
-//   studio.initialize()
-//   studio.extend(extension)
-//   studio.ui.hide()
-// }
+if (!isProd) {
+  studio.initialize()
+  studio.extend(extension)
+  studio.ui.hide()
+}
 export const project = getProject(
   'Bavan Gallery Project',
   isProd
@@ -114,7 +114,7 @@ export default function Scene({ ...props }) {
           bavanGallerySheet.sequence.position = 0
           bavanGallerySheet.sequence
             .play({
-              range: [0, 3 + 29 / 30],
+              range: [0, 4],
               rafDriver: theatreRafDriver,
             })
             .then(() => {
@@ -122,7 +122,7 @@ export default function Scene({ ...props }) {
               setIntroCompleted(true)
             })
         })
-      }, 2500) // 4 seconds delay
+      }, 1500) // 4 seconds delay
 
       // Cleanup function to clear the timeout if component unmounts
       return () => clearTimeout(animationTimer)
