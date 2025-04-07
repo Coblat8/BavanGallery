@@ -13,6 +13,11 @@ export default function ClientLenis({ children }: { children: ReactNode }) {
 	// 		lenisRef.current.lenis.raf(time)
 	// 	}
 	// })
+	// if(lenisRef.current?.lenis){
+	// 	const now = performance.now()
+	// 	lenisRef.current.lenis.raf(now)
+	// }
+
 
 	return (
 		<ReactLenis
@@ -31,6 +36,7 @@ export default function ClientLenis({ children }: { children: ReactNode }) {
 				// touchInertiaMultiplier: 2, // lower inertia for a smoother touch experience
 				// touchMultiplier: 0.7,
 				// infinite: true,
+				autoRaf:false
 			}}
 		>
 			{children}

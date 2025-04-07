@@ -6,7 +6,7 @@ import * as THREE from 'three'
 import { ScrollTicker } from '@/templates/Scroll'
 import {  Preload, Stats, useTexture, useGLTF, useDetectGPU } from '@react-three/drei'
 import { getProject } from '@theatre/core'
-import { RefreshSnapshot, SheetProvider } from '@theatre/r3f'
+import { RafDriverProvider, RefreshSnapshot, SheetProvider } from '@theatre/r3f'
 // import extension from '@theatre/r3f/dist/extension'
 // import studio from '@theatre/studio'
 import { useAnimationStore } from 'lib/store/useAnimationStore'
@@ -18,6 +18,7 @@ import { BavanGallery } from './BavanGallery'
 import { Yard } from './Yard'
 import { BavanLogo } from './BavanLogo'
 import { useIsClient } from '@uidotdev/usehooks'
+import { theatreRafDriver } from './CustomRafDriver'
 
 
 const isProd = true
@@ -114,6 +115,7 @@ export default function Scene({ ...props }) {
           bavanGallerySheet.sequence
             .play({
               range: [0, 3 + 29 / 30],
+              rafDriver: theatreRafDriver,
             })
             .then(() => {
               // bavanGallerySheet.sequence.pause()
@@ -132,6 +134,7 @@ export default function Scene({ ...props }) {
 
   return (
     <>
+    <RafDriverProvider driver={theatreRafDriver}>
       <Canvas
         {...props}
         shadows
@@ -172,6 +175,7 @@ export default function Scene({ ...props }) {
           </SheetProvider>
         </Suspense>
       </Canvas>
+      </RafDriverProvider>
       <LoadingScreen
         started={start}
         onStarted={() =>{ 

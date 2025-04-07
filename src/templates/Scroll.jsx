@@ -10,6 +10,7 @@ import * as THREE from 'three'
 import { useLenis } from 'lenis/react'
 import { useCurrentSheet } from '@theatre/r3f'
 import { useAnimationStore } from 'lib/store/useAnimationStore'
+import { theatreRafDriver } from '@/components/canvas/CustomRafDriver'
 
 
 const { damp } = THREE.MathUtils
@@ -393,8 +394,15 @@ const scrollFinished = useRef(false)
   // , [lenis])
 
   
-  useFrame(( {viewport}, delta) => {
-    console.log(scrollProgress.current)
+  useFrame(( {viewport, clock}, delta) => {
+    
+  const now = performance.now()
+  // Tick Theatre
+  theatreRafDriver.tick(now)
+
+  // Tick Lenis
+  lenis?.raf(now)
+
     if (introCompleted && (scrollProgress.current * totalAnimation > 3 + 29 / 30) ) {
       bavanGallerySheet.sequence.position = damp(
         bavanGallerySheet.sequence.position,
