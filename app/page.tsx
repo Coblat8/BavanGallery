@@ -18,7 +18,7 @@ export default function Page() {
  
   return (
     <>
-      <div className="relative flex flex-col w-screen justify-center items-center h-[1500vh] shrink-0 overflow-x-hidden ">
+      <div className="relative flex flex-col w-screen justify-center items-center h-[2500vh] shrink-0 overflow-x-hidden ">
         {/* <Scroll > */}
         <Scene
           style={{
