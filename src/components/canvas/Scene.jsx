@@ -7,8 +7,8 @@ import { ScrollTicker } from '@/templates/Scroll'
 import {  Preload, Stats, useTexture, useGLTF, useDetectGPU } from '@react-three/drei'
 import { getProject } from '@theatre/core'
 import { RefreshSnapshot, SheetProvider } from '@theatre/r3f'
-// import extension from '@theatre/r3f/dist/extension'
-// import studio from '@theatre/studio'
+import extension from '@theatre/r3f/dist/extension'
+import studio from '@theatre/studio'
 import { useAnimationStore } from 'lib/store/useAnimationStore'
 import projectState from '../../../public/Bavan Gallery Project.theatre-project-state-3.json'
 import Experience from './Experience'
@@ -20,13 +20,13 @@ import { BavanLogo } from './BavanLogo'
 import { useIsClient } from '@uidotdev/usehooks'
 
 
-const isProd = true
+const isProd = false
 
-// if (!isProd) {
-//   studio.initialize()
-//   studio.extend(extension)
-//   studio.ui.hide()
-// }
+if (!isProd) {
+  studio.initialize()
+  studio.extend(extension)
+  studio.ui.hide()
+}
 export const project = getProject(
   'Bavan Gallery Project',
   isProd

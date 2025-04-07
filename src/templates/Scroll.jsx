@@ -27,7 +27,7 @@ export const ScrollTicker = ({ smooth = 9999999 }) => {
   const scrollProgress = useRef(0)
   const scrollTop = useRef(0)
   const animationComplete = useRef(false)
-  const totalAnimation = 31 + 10 / 30
+  const totalAnimation = 32
 
 
   const updateScrollState = () => {
@@ -358,12 +358,31 @@ useEffect(() => {
 }, [inputGroupVisible])
 
 
+const scrollFinished = useRef(false)
 // useEffect(() => {
     lenis.on('scroll', ({ scroll, progress }) => {
            if (introCompleted) {
              scrollTop.current = scroll
              scrollProgress.current = progress
             //  updateScrollState()
+            if(scrollProgress.current  > 0.92 && !scrollFinished.current) {
+              scrollFinished.current = true
+              lenis.scrollTo( (31 + 20) / totalAnimation * lenis.limit, {
+                immediate: false,
+                duration: 4,
+                lock: true,
+                onComplete: () => {
+                  const resetPoint = ((11 + 10 / 30) / totalAnimation) * lenis.limit // 20% of total height
+                  lenis.scrollTo(resetPoint, {
+                    immediate: true,
+                  }) // Reset without transition
+                  scrollTop.current = resetPoint
+                  scrollProgress.current = (11 + 10 / 30) / totalAnimation
+                  animationComplete.current = true
+                  scrollFinished.current = false
+                }
+              })
+            }
              
            }
     })
@@ -375,7 +394,8 @@ useEffect(() => {
 
   
   useFrame(( {viewport}, delta) => {
-    if (introCompleted && (scrollProgress.current * totalAnimation > 3 + 29 / 30) && (scrollTop.current < lenis.limit * 0.98) ) {
+    console.log(scrollProgress.current)
+    if (introCompleted && (scrollProgress.current * totalAnimation > 3 + 29 / 30) ) {
       bavanGallerySheet.sequence.position = damp(
         bavanGallerySheet.sequence.position,
         scrollProgress.current * totalAnimation,
