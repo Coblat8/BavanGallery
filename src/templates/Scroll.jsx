@@ -376,19 +376,14 @@ useEffect(() => {
   
   useFrame(( {viewport}, delta) => {
     if (introCompleted && (scrollProgress.current * totalAnimation > 3 + 29 / 30) ) {
-      const target = scrollProgress.current * totalAnimation
-      const diff = Math.abs(bavanGallerySheet.sequence.position - target)
-
-      if (diff < 0.001) {
-        bavanGallerySheet.sequence.position = target
-      } else {
-        bavanGallerySheet.sequence.position = damp(
-          bavanGallerySheet.sequence.position,
-          target,
-          smooth,
-          delta
-        )
-      }
+      // bavanGallerySheet.sequence.position = damp(
+      //   bavanGallerySheet.sequence.position,
+      //   scrollProgress.current * totalAnimation,
+      //   smooth,
+      //   delta
+      // )
+      // detectStops(delta)
+       bavanGallerySheet.sequence.position = scrollProgress.current * totalAnimation
     }
   })
 
